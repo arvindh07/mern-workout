@@ -1,0 +1,25 @@
+.wrapper{
+    width:90%;
+    margin: 0 auto;
+    display: flex;
+    padding: 3rem 0;
+}
+.left{
+    width:70%;
+}
+.right{
+    width:30%;
+}
+.delete{
+    cursor: pointer;
+    /* border: 1px solid; */
+    width:100%;
+    font-size: 2rem !important;
+    display: flex;
+    justify-content: flex-end;
+    color: red;
+    transition: all 0.2s;
+}
+.delete:hover{
+    color:crimson;
+}
