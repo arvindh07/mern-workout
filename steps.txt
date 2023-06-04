@@ -1,1 +1,10 @@
 Setting up....
+
+
+auth
+* password hashing: 
+    -> we should not store the plain text password in database as it may get
+manipulated in many ways. We should hash the password before storing in db. 
+    -> Even if db is breached, only the hashed password will be only.
+    -> For login, when the user enters the password, we will verify with the hashed
+password and respond back based upon the outcome of hashed password and entered password.
