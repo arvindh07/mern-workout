@@ -6,15 +6,19 @@ require("dotenv").config();
 const PORT = process.env.PORT || 4002;
 const mongoose = require("mongoose");
 const workoutRoute = require("./routes/workoutRoute");
+const userRoute = require("./routes/userRoute");
 
 // middlewares
 app.use(express.json());
 app.use(cors());
-app.use("/",(req,res,next) => {
-    console.log("path",req.path,req.method);
+app.use("/", (req, res, next) => {
+    console.log("path", req.path, req.method);
     next();
 })
-app.use("/api/workouts",workoutRoute);
+
+// routes
+app.use("/api/workouts", workoutRoute);
+app.use("/auth/user", userRoute);
 
 // connecting to mongodb
 mongoose.connect(process.env.MONGO_URI)
