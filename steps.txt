@@ -4,7 +4,36 @@ Setting up....
 auth
 * password hashing: 
     -> we should not store the plain text password in database as it may get
-manipulated in many ways. We should hash the password before storing in db. 
+    manipulated in many ways. We should hash the password before storing in db. 
     -> Even if db is breached, only the hashed password will be only.
     -> For login, when the user enters the password, we will verify with the hashed
-password and respond back based upon the outcome of hashed password and entered password.
+    password and respond back based upon the outcome of hashed password and entered password.
+* signup logic:
+    -> we can write signup logic like password hashing and string in db in controller itself.
+    -> but to make it more clean, we can create a static method in the mongoose model itself.
+    -> using schemaName.statics.methodName = function(){}
+* jwt - theory
+    -> It is just one way of managing authentication bw frontend and backend.
+    -> Working Scenerio: 
+        1. User signs up the app successfully and sends the request to backend, then we will create
+        the JWT for the user and send the JWT to frontend.
+        2. We can use the jwt in frontend for protecting routes etc. 
+        For eg: 
+            -> if token present, i.e., user authenticated, we will show them home page.
+            -> if token not present, i.e., user not authenticated, we will show them login page.
+        3. We can use JWT to protect routes in backend as well. User can send api request with
+        jwt in headers from frontend and in backend, we will use this to make api request if 
+        valid token or send error like "u need to authenticated to access this resource".
+    -> 3 parts:
+        1. headers -> contains algo, type
+        2. payload -> contains user info like username etc. *** Should not contain sensitive info. ***
+        3. Signature -> it is used by server to verify the token whether it is valid or not.
+    -> How it does?
+        1. First, it hashes the header(algo), payload(no-sensitive info abt user) with a secret key.
+        2. Secret key should not be shared in any public forum.
+        3. We get a signature as a result of above, in the server. This process is called signing
+        the token. Server sends the token return to client.
+        4. From now on, the client uses the jwt to make api request and in the server side, we use
+        to verify the token and moves it to next process only if it is valid token.
+        5. Verifying -> in server, the first two parts are hashed with secret key to verify whether it
+        matches the signature or not.
