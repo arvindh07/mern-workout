@@ -9,6 +9,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSignup } from '../../hooks/useSignup';
+import { Alert } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -28,21 +30,24 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Signup() {
-    const [signupDetails, setSignupDetails] = React.useState({
-        email: "",
-        password: ""
-    })
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("signup -> ",signupDetails);
-    };
-    const handleChange = (e) => {
-        const {name,value} = e.target;
-        setSignupDetails((prev) => ({
-            ...prev,
-            [name]:value
-        }))
-    }
+  const initialState = {
+    email: "",
+    password: ""
+  }
+  const [signupDetails, setSignupDetails] = React.useState(initialState);
+  const { signup, error, loading } = useSignup();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await signup(signupDetails?.email, signupDetails?.password);
+    setSignupDetails(initialState);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSignupDetails((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -60,7 +65,7 @@ export default function Signup() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-          Signup
+            Signup
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -72,6 +77,7 @@ export default function Signup() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={signupDetails?.email}
               onChange={handleChange}
             />
             <TextField
@@ -83,6 +89,7 @@ export default function Signup() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={signupDetails?.password}
               onChange={handleChange}
             />
             <Button
@@ -90,10 +97,12 @@ export default function Signup() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
               Signup
             </Button>
           </Box>
+          {error && <Alert severity="warning">{error}</Alert>}
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

@@ -16,7 +16,7 @@ const userLogin = async (req,res) => {
         })
     } catch (err) {
         res.status(400).json({
-            message: err.message
+            error: err.message
         })
     }
 }
@@ -32,7 +32,7 @@ const userSignup = async (req,res) => {
         })
     } catch (error) {
         res.status(400).json({
-            message: error.message
+            error: error.message
         })
     }
 }

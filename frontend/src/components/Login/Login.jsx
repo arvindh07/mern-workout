@@ -28,10 +28,11 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
-    const [loginDetails, setLoginDetails] = React.useState({
+    const initialState = {
         email: "",
         password: ""
-    })
+      }
+    const [loginDetails, setLoginDetails] = React.useState(initialState)
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("login -> ",loginDetails);
