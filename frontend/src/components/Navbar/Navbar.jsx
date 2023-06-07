@@ -8,12 +8,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useLogout } from '../../hooks/useLogout';
+import { useSelector } from 'react-redux';
 
 export default function Navbar() {
-  const {logout} = useLogout();
+  const { logout } = useLogout();
   const handleLogout = () => {
     logout();
   }
+  const user = useSelector(state => state.userReducer.user);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -36,13 +38,16 @@ export default function Navbar() {
           >
             Workouts
           </Typography>
-          <div className='logout'>
+          {user && (<div className='logout'>
+            <span>{user?.email}</span>
             <Button onClick={handleLogout}>Logout</Button>
           </div>
-          <div className='nav-right'>
+          )}
+          {!user && (<div className='nav-right'>
             <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>
           </div>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
