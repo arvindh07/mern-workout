@@ -9,6 +9,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useLogin } from '../../hooks/useLogin';
+import { Alert } from '@mui/material';
 
 function Copyright(props) {
     return (
@@ -31,17 +33,19 @@ export default function Login() {
     const initialState = {
         email: "",
         password: ""
-      }
+    };
+    const {login,error,loading} = useLogin();
     const [loginDetails, setLoginDetails] = React.useState(initialState)
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("login -> ",loginDetails);
+        await login(loginDetails?.email,loginDetails?.password);
+        setLoginDetails(initialState);
     };
     const handleChange = (e) => {
-        const {name,value} = e.target;
+        const { name, value } = e.target;
         setLoginDetails((prev) => ({
             ...prev,
-            [name]:value
+            [name]: value
         }))
     }
 
@@ -73,6 +77,7 @@ export default function Login() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value={loginDetails?.email}
                             onChange={handleChange}
                         />
                         <TextField
@@ -83,6 +88,7 @@ export default function Login() {
                             label="Password"
                             type="password"
                             id="password"
+                            value={loginDetails?.password}
                             autoComplete="current-password"
                             onChange={handleChange}
                         />
@@ -91,10 +97,12 @@ export default function Login() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            disabled={loading}
                         >
                             Login
                         </Button>
                     </Box>
+                    {error && <Alert severity="warning">{error}</Alert>}
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
