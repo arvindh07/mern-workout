@@ -6,8 +6,15 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { useLogout } from '../../hooks/useLogout';
 
 export default function Navbar() {
+  const {logout} = useLogout();
+  const handleLogout = () => {
+    logout();
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,6 +36,9 @@ export default function Navbar() {
           >
             Workouts
           </Typography>
+          <div className='logout'>
+            <Button onClick={handleLogout}>Logout</Button>
+          </div>
           <div className='nav-right'>
             <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>

@@ -25,3 +25,7 @@ code {
 .nav-right a:hover{
   text-decoration: underline;
 }
+.logout button{
+  border: 2px solid;
+  color: white;
+}
