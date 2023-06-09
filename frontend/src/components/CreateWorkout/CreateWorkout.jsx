@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postWorkout } from '../../features/workouts';
 
 const CreateWorkout = () => {
@@ -13,6 +13,7 @@ const CreateWorkout = () => {
         reps: ""
     }
     const [formDetails, setFormDetails] = useState(initialState);
+    const user = useSelector(state => state.userReducer.user);
     const changeHandler = (e) => {
         const { name, value } = e.target;
         setFormDetails((prev) => ({
@@ -23,17 +24,20 @@ const CreateWorkout = () => {
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!user){
+            return;
+        }
         const response = await fetch("http://localhost:4001/api/workouts", {
             method: 'POST',
             body:JSON.stringify(formDetails),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             },
         });
         const respJson = await response.json();
-        console.log("resp json -> ",respJson);
         setFormDetails(initialState);
-        dispatch(postWorkout(respJson.newWorkout));
+        dispatch(postWorkout({newWorkout: respJson.newWorkout}));
     }
     return (
         <Box

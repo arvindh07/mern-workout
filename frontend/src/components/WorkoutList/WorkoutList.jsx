@@ -11,10 +11,7 @@ const WorkoutList = () => {
         if (workoutStore) {
             setWorkouts(workoutStore);
         }
-        console.log("workouts -> ", workouts);
     }, [workoutStore])
-    console.log("wo store -> ", workoutStore);
-    console.log("list rendering....");
     return (
         <div>
             {workouts?.length > 0 && workouts?.map((workout) => {

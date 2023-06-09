@@ -11,8 +11,7 @@ export const workoutSlice = createSlice({
       state.workouts = payload;
     },
     postWorkout: (state,action) => {
-      const {payload} = action;
-      state.workouts.push(payload);
+      state.workouts.push(action.payload.newWorkout);
     },
     deleteWorkout: (state,action) => {
       const {id} = action.payload;

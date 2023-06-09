@@ -5,20 +5,26 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { formatDistanceToNow } from 'date-fns';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteWorkout } from '../../features/workouts';
 
 export default function WorkoutCard({ workout }) {
     const { _id, name, load, reps, createdAt } = workout;
     const dispatch = useDispatch();
+    const user = useSelector(state => state.userReducer.user);
 
     const handleDeleteWorkout = async (id) => {
+        if(!user){
+            return;
+        }
         try {
             const response = await fetch(`http://localhost:4001/api/workouts/${id}`,{
-                method:"DELETE"
+                method:"DELETE",
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             });
             const json = await response.json();
-            console.log("resp -> ",response,json);
             dispatch(deleteWorkout({id}));
         } catch (error) {
             console.log("err",error);

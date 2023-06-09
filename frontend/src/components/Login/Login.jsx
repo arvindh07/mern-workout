@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useLogin } from '../../hooks/useLogin';
 import { Alert } from '@mui/material';
+import {useNavigate} from "react-router-dom";
 
 function Copyright(props) {
     return (
@@ -34,12 +35,14 @@ export default function Login() {
         email: "",
         password: ""
     };
+    const navigate = useNavigate();
     const {login,error,loading} = useLogin();
     const [loginDetails, setLoginDetails] = React.useState(initialState)
     const handleSubmit = async (event) => {
         event.preventDefault();
         await login(loginDetails?.email,loginDetails?.password);
         setLoginDetails(initialState);
+        navigate("/");
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
