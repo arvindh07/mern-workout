@@ -8,12 +8,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useLogout } from '../../hooks/useLogout';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addWorkouts } from '../../features/workouts';
 
 export default function Navbar() {
   const { logout } = useLogout();
+  const dispatch = useDispatch();
   const handleLogout = () => {
     logout();
+    dispatch(addWorkouts(null));
   }
   const user = useSelector(state => state.userReducer.user);
 
